@@ -1,10 +1,13 @@
-function map(old, fMin, fMax, tMin, tMax) {
+var comp = require('./compare');
+
+var isDef = comp.isDef;
+var map = function (old, fMin, fMax, tMin, tMax) {
     return ((old - fMin) * (tMax - tMin) / (fMax - fMin)) + tMin;
-}
-function probMap(old, low, high, prob) {
-    low = def(low) ? low : 0;
-    high = def(high) ? high : 1;
-    prob = def(prob) ? prob : 1;
+};
+var probMap = function (old, low, high, prob) {
+    low = isDef(low) ? low : 0;
+    high = isDef(high) ? high : 1;
+    prob = isDef(prob) ? prob : 1;
     var res;
     if (old < (0.5 - (prob / 2))) {
         res = map(old, 0, (0.5 - (prob / 2)), 0, low);
@@ -16,8 +19,8 @@ function probMap(old, low, high, prob) {
         res = false;
     }
     return res;
-}
-function moveToBounds(old, min, max) {
+};
+var moveToBounds = function (old, min, max) {
     while (old > max || old < min) {
         if (old < min) {
             old = min + (min - old);
@@ -26,8 +29,8 @@ function moveToBounds(old, min, max) {
         }
     }
     return old;
-}
-function minLen(array) {
+};
+var minLen = function (array) {
     var a;
     var min = array[Object.keys(array)[0]].length;
 
@@ -38,8 +41,8 @@ function minLen(array) {
     }
 
     return min;
-}
-function maxLen(array) {
+};
+var maxLen = function (array) {
     var a;
     var max = 0;
     for (a in array) {
@@ -49,4 +52,12 @@ function maxLen(array) {
     }
 
     return max;
-}
+};
+
+module.exports = {
+    map: map,
+    maxLen: maxLen,
+    minLen: minLen,
+    moveToBounds: moveToBounds,
+    probMap: probMap
+};
