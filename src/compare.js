@@ -1,20 +1,4 @@
-var isObject = function (test) {
-    var objectType = Object.prototype.toString.call({});
-    var testType = Object.prototype.toString.call(test);
-    return objectType === testType;
-};
-var isArray = function (test) {
-    var arrayType = Object.prototype.toString.call([]);
-    var testType = Object.prototype.toString.call(test);
-    return arrayType === testType;
-};
-var isNumber = function (test) {
-    return !isNaN(test);
-};
-var isDef = function (type) {
-    return typeof type !== 'undefined';
-};
-
+// Compare Objects
 var compareObjectsComplex = function (o, p) {
     var i;
     var keysO = Object.keys(o).sort();
@@ -66,11 +50,109 @@ var compareObjectsComplex = function (o, p) {
     }
     return true;
 };
+var compareObjectsSimple = function (o, p) {
+    return JSON.stringify(o) === JSON.stringify(p);
+};
+
+// Simple Type Confirmations
+var isArray = function (test) {
+    var arrayType = Object.prototype.toString.call([]);
+    var testType = Object.prototype.toString.call(test);
+    return arrayType === testType;
+};
+var isDefined = function (test) {
+    return typeof test !== 'undefined';
+};
+var isNull = function (test) {
+    return test === null;
+};
+var isNumber = function (test) {
+    return !isNaN(test);
+};
+var isObject = function (test) {
+    var objectType = Object.prototype.toString.call({});
+    var testType = Object.prototype.toString.call(test);
+    return objectType === testType;
+};
+var isString = function (test) {
+    return typeof test !== 'string';
+};
+
+// Is a valid IP
+function isIPv4(ip) {
+    var ip4Regex = '^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).' +
+        '(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).' +
+        '(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).' +
+        '(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$';
+    ip4Regex = new RegExp(ip4Regex);
+
+    return ip4Regex.test(ip);
+}
+function isIPv6(ip) {
+    var ip6Regex = '(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|' +
+        '([0-9a-fA-F]{1,4}:){1,7}:|' +
+        '([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|' +
+        '([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|' +
+        '([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|' +
+        '([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|' +
+        '([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|' +
+        '[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|' +
+        ':((:[0-9a-fA-F]{1,4}){1,7}|:)|' +
+        'fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|' +
+        '::(ffff(:0{1,4}){0,1}:){0,1}' +
+        '((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}' +
+        '(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|' +
+        '([0-9a-fA-F]{1,4}:){1,4}:' +
+        '((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}' +
+        '(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))';
+    ip6Regex = new RegExp(ip6Regex);
+
+    return ip6Regex.test(ip);
+}
+
+// Get the heighest/lowest value in an int array
+var maxVal = function (array) {
+    var a;
+    var max = 0;
+    for (a in array) {
+        if ({}.hasOwnProperty.call(array, a) && array[a].length > max) {
+            max = array[a].length;
+        }
+    }
+
+    return max;
+};
+var minVal = function (array) {
+    var a;
+    var min = array[Object.keys(array)[0]].length;
+
+    for (a in array) {
+        if ({}.hasOwnProperty.call(array, a) && min > array[a].length) {
+            min = array[a].length;
+        }
+    }
+
+    return min;
+};
 
 module.exports = {
+    compareObjects: compareObjectsSimple,
     compareObjectsComplex: compareObjectsComplex,
+    compareObjectsSimple: compareObjectsSimple,
+    isArr: isArray,
     isArray: isArray,
-    isDef: isDef,
+    isDef: isDefined,
+    isDefined: isDefined,
+    isNull: isNull,
+    isNum: isNumber,
     isNumber: isNumber,
-    isObject: isObject
+    isObj: isObject,
+    isObject: isObject,
+    isStr: isString,
+    isString: isString,
+    isIP: isIPv4,
+    isIPv4: isIPv4,
+    isIPv6: isIPv6,
+    maxVal: maxVal,
+    minVal: minVal
 };
