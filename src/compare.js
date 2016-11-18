@@ -173,6 +173,8 @@ module.exports = {
     isArray: isArray,
     isDef: isDefined,
     isDefined: isDefined,
+    isFunc: isFunction,
+    isFunction: isFunction,
     isNull: isNull,
     isNum: isNumber,
     isNumber: isNumber,
