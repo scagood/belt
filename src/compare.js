@@ -63,6 +63,11 @@ var isArray = function (test) {
 var isDefined = function (test) {
     return typeof test !== 'undefined';
 };
+var isFunction = function (test) {
+    var arrayType = Object.prototype.toString.call(function () {});
+    var testType = Object.prototype.toString.call(test);
+    return arrayType === testType;
+}
 var isNull = function (test) {
     return test === null;
 };
@@ -115,8 +120,8 @@ var maxVal = function (array) {
     var a;
     var max = 0;
     for (a in array) {
-        if ({}.hasOwnProperty.call(array, a) && array[a].length > max) {
-            max = array[a].length;
+        if ({}.hasOwnProperty.call(array, a) && array[a] > max) {
+            max = array[a];
         }
     }
 
@@ -127,8 +132,33 @@ var minVal = function (array) {
     var min = array[Object.keys(array)[0]].length;
 
     for (a in array) {
-        if ({}.hasOwnProperty.call(array, a) && min > array[a].length) {
-            min = array[a].length;
+        if ({}.hasOwnProperty.call(array, a) && min > array[a]) {
+            min = array[a];
+        }
+    }
+
+    return min;
+};
+
+// Get the longest/shortest
+var maxLen = function (array) {
+    var a;
+    var max = 0;
+    for (a in array) {
+        if ({}.hasOwnProperty.call(array, a)) {
+            max = (array[a].length < max) ? max : array[a].length;
+        }
+    }
+
+    return max;
+};
+var minLen = function (array) {
+    var a;
+    var min = array[Object.keys(array)[0]].length;
+
+    for (a in array) {
+        if ({}.hasOwnProperty.call(array, a)) {
+            min = (array[a].length > min) ? min : array[a].length;
         }
     }
 
@@ -154,5 +184,7 @@ module.exports = {
     isIPv4: isIPv4,
     isIPv6: isIPv6,
     maxVal: maxVal,
-    minVal: minVal
+    minVal: minVal,
+    maxLen: maxLen,
+    minLen: minLen
 };

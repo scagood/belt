@@ -1,43 +1,33 @@
 // Random Range Derangements are disscussed here
 // http://epubs.siam.org/doi/pdf/10.1137/1.9781611972986.7
 
-function derangementNumber(n) {
-    if (n === 0) {
-        return 1;
-    }
-    var factorial = 1;
-    while (n) {
-        factorial *= n--;
-    }
-    return Math.floor(factorial / Math.E);
-}
-function derangePDMapInitial() {
-    return false;
-}
-function derangePDMapRecursive(_, i) {
-    return i;
-}
-function derangePDFilterRecursive(mark, i, j) {
-    return !mark[j] && j < i;
-}
-
 // Derange implimentation by Paul Draper
 // http://stackoverflow.com/users/1212596/paul-draper
-function derangePD(array) {
+var derangePD = function (array) {
+    function derangementNumber(n) {
+        if (n === 0) {
+            return 1;
+        }
+        var factorial = 1;
+        while (n) {
+            factorial *= n--;
+        }
+        return Math.floor(factorial / Math.E);
+    }
     array = array.slice();
-    var mark = array.map(derangePDMapInitial);
-    var i;
-    var u;
-    var j;
-    var tmp;
-    var unmarked;
-
-    for (i = array.length - 1, u = array.length - 1; u > 0; i--) {
+    var mark = array.map(function () {
+        return false;
+    });
+    for (var i = array.length - 1, u = array.length - 1; u > 0; i--) {
         if (!mark[i]) {
-            unmarked = mark.map(derangePDMapRecursive).filter(derangePDFilterRecursive.bind(null, mark, j));
-            j = unmarked[Math.floor(Math.random() * unmarked.length)];
+            var unmarked = mark.map(function (_, i) {
+                return i;
+            }).filter(function (j) {
+                return !mark[j] && j < i;
+            });
+            var j = unmarked[Math.floor(Math.random() * unmarked.length)];
 
-            tmp = array[j];
+            var tmp = array[j];
             array[j] = array[i];
             array[i] = tmp;
 
@@ -50,11 +40,11 @@ function derangePD(array) {
         }
     }
     return array;
-}
+};
 
 // Derange implimentation by RobG
 // http://stackoverflow.com/users/257182/robg
-function derangeRG(arr) {
+var derangeRG = function (arr) {
     // Make a copy of arr
     var c = arr.slice();
 
@@ -99,7 +89,7 @@ function derangeRG(arr) {
         result.push(c[0]);
     }
     return result;
-}
+};
 
 // The following shuffle functions are from Mkie Bostock
 // https://bost.ocks.org/mike/shuffle/
@@ -167,7 +157,7 @@ var knuth = function (array) {
 
 module.exports = {
     decreasingDeck: decreasingDeck,
-    derange: derangeRG,
+    derange: derangePD,
     derangePD: derangePD,
     derangeRG: derangeRG,
     fisherYates: knuth,

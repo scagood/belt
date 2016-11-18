@@ -33,6 +33,14 @@ var moveToBounds = function (old, min, max) {
     return old;
 };
 
+// Rounding functions
+var roundDP = function (number, precision) {
+    return Math.round(number * Math.pow(10, precision)) / Math.pow(10, precision);
+};
+var roundSF = function (number, precision) {
+    return number.toPrecision(precision);
+};
+
 // Pythag theorum
 var pythag = function (x, y) {
     x = Math.pow(x, 2);
@@ -112,6 +120,8 @@ module.exports = {
     map: map,
     probMap: probMap,
     moveToBounds: moveToBounds,
+    roundDP: roundDP,
+    roundSF: roundSF,
     pythag: pythag,
     toDegrees: toDegrees,
     toRadians: toRadians,
