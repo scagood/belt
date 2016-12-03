@@ -67,7 +67,7 @@ var isFunction = function (test) {
     var arrayType = Object.prototype.toString.call(function () {});
     var testType = Object.prototype.toString.call(test);
     return arrayType === testType;
-}
+};
 var isNull = function (test) {
     return test === null;
 };

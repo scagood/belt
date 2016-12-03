@@ -75,6 +75,52 @@ var roundSF = function (number, precision) {
 };
 
 /**
+ * Calculate the Sum of 'points'
+ * @param  {Array} points An array of points to get the Sum of.
+ * @return {Number}       The Sum of the points
+ */
+function sum(points) {
+    var sum = 0;
+    var a;
+    if (belt.compare.isArray(points)) {
+        for (a = 0; a < points.length; a++) {
+            sum += points[a];
+        }
+    }
+    return sum;
+}
+/**
+ * Calculate the Mean of 'points'
+ * @param  {Array} points An array of points to get the Mean of.
+ * @return {Number}       The Mean of the points
+ */
+function mean(points) {
+    var mean = sum(points);
+    mean /= points.length;
+    return mean;
+}
+/**
+ * Calculate the Standard Deviation of 'points'
+ * @param  {Array} points   An array of points to get the Standard Deviation of.
+ * @param  {Boolean} sample Is this a sample of the population
+ * @return {Number}         The Standard Deviation of the points
+ */
+function standardDeviation(points, sample) {
+    var m = mean(points);
+    var stdDev = 0;
+    var a;
+    if (belt.compare.isArray(points)) {
+        for (a = 0; a < points.length; a++) {
+            stdDev += Math.pow(points[a] - m, 2);
+        }
+        stdDev /= points.length - (sample===true?1:0);
+        stdDev = Math.pow(stdDev, 0.5);
+
+    }
+    return stdDev;
+}
+
+/**
  * Perform pythagoras' theorum
  * @param  {Number} x Length of 'opposite side'
  * @param  {Number} y Length of 'adjacent side'
@@ -232,6 +278,9 @@ module.exports = {
     probMap: probMap,
     moveToBounds: moveToBounds,
     roundDP: roundDP,
+    roundSF: roundSF,
+    sum: sum,
+    standardDeviation: standardDeviation,
     roundSF: roundSF,
     pythag: pythag,
     toDegrees: toDegrees,
