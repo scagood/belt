@@ -79,7 +79,7 @@ var roundSF = function (number, precision) {
  * @param  {Array} points An array of points to get the Sum of.
  * @return {Number}       The Sum of the points
  */
-function sum(points) {
+var sum = function(points) {
     var sum = 0;
     var a;
     if (belt.compare.isArray(points)) {
@@ -94,7 +94,7 @@ function sum(points) {
  * @param  {Array} points An array of points to get the Mean of.
  * @return {Number}       The Mean of the points
  */
-function mean(points) {
+var mean = function(points) {
     var mean = sum(points);
     mean /= points.length;
     return mean;
@@ -105,7 +105,7 @@ function mean(points) {
  * @param  {Boolean} sample Is this a sample of the population
  * @return {Number}         The Standard Deviation of the points
  */
-function standardDeviation(points, sample) {
+var standardDeviation = function(points, sample) {
     var m = mean(points);
     var stdDev = 0;
     var a;
@@ -118,6 +118,27 @@ function standardDeviation(points, sample) {
 
     }
     return stdDev;
+}
+
+/**
+ * Find the value of points 'coords' in an n dimentional Gaussian Distribution
+ * @param  {Array} coords   An 'N' dimentional array of coordinates
+ * @param  {Number} stdDev The Standard Deviation to be used on calculating the curve
+ * @return {Number}        The probability at 'coords'
+ */
+var gaussianDistribution = function(coords, stdDev) {
+    stdDev = typeof stdDev === "undefined" ? 1 : stdDev;
+    var a;
+    var b = 0;
+    var c = 0;
+    for (a = 0; a < coords.length; a++) {
+        // Lighter than Math.pow?
+        b += (coords[a] * coords[a]);
+    }
+    c = Math.pow(2 * Math.PI, 0.5) * stdDev;
+    c = Math.pow(c, coords.length);
+
+    return (1 / c) * Math.pow(Math.E, -b/(2*stdDev*stdDev));
 }
 
 /**
@@ -281,6 +302,7 @@ module.exports = {
     roundSF: roundSF,
     sum: sum,
     standardDeviation: standardDeviation,
+    gaussianDistribution: gaussianDistribution,
     roundSF: roundSF,
     pythag: pythag,
     toDegrees: toDegrees,
