@@ -4,7 +4,7 @@
   "description": "A toolkit",
   "main": "src/index.js",
   "scripts": {
-    "test": "ava && xo"
+    "test": "ava && xo --fix"
   },
   "repository": {
     "type": "git",
@@ -14,12 +14,17 @@
   "license": "MIT",
   "xo": {
     "space": 4,
-    "ignore": [],
+    "ignore": [
+      "**/devtest/**",
+      "**/web/**",
+      "**/webpack.config.js"
+    ],
     "rules": {
       "max-params": [
         1,
         5
-      ]
+      ],
+      "no-loop-func": 0
     }
   },
   "devDependencies": {

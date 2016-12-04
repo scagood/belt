@@ -1,46 +1,47 @@
-var belt = require('../');
-var math = belt.maths;
 import test from 'ava';
+
+var belt = require('../');
+
+var math = belt.maths;
 
 // Map tests
 test('Map performs within bounds', t => {
-	var fMin = 0;
+    var fMin = 0;
     var fMax = 1;
     var tMin = 0;
     var tMax = 10;
-    
+
     var a;
     var out;
     for (a = 0; a < 10; a++) {
-        out = math.map(a/tMax, fMin, fMax, tMin, tMax);
+        out = math.map(a / tMax, fMin, fMax, tMin, tMax);
         t.is(out, a);
     }
 });
 test('Map performs outside bounds', t => {
-	var fMin = 0;
+    var fMin = 0;
     var fMax = 1;
     var tMin = 0;
     var tMax = 10;
-    
+
     var a;
     var out;
     for (a = -10; a < 20; a++) {
-        out = math.map(a/tMax, fMin, fMax, tMin, tMax);
+        out = math.map(a / tMax, fMin, fMax, tMin, tMax);
         t.is(out, a);
     }
 });
 test('Map performs non zero', t => {
-	var fMin = 2;
+    var fMin = 2;
     var fMax = 1;
     var tMin = 0;
     var tMax = 10;
-    
+
     t.is(math.map(1, fMin, fMax, tMin, tMax), 10);
     t.is(math.map(2, fMin, fMax, tMin, tMax), 0);
     t.is(math.map(1.5, fMin, fMax, tMin, tMax), 5);
     t.is(math.map(0.5, fMin, fMax, tMin, tMax), 15);
     t.is(math.map(2.5, fMin, fMax, tMin, tMax), -5);
-    
 });
 
 test('Probability mapping within bounds', t => {
@@ -49,7 +50,7 @@ test('Probability mapping within bounds', t => {
     var prob = 1;
     var a;
     var b = 100;
-    
+
     for (a = 0; a < b; a++) {
         t.is(math.probMap(a / b, low, high, prob), a / b);
     }
@@ -58,12 +59,12 @@ test('Probability mapping out of bounds', t => {
     var low = 0.6;
     var high = 0.9;
     var prob = 0.5;
-    
-    t.is(math.probMap(-0.1, low, high, prob), false)
-    t.is(math.probMap(1.1, low, high, prob), false)
+
+    t.is(math.probMap(-0.1, low, high, prob), false);
+    t.is(math.probMap(1.1, low, high, prob), false);
 });
 
-//var moveToBounds = function (old, min, max) {};
+// var moveToBounds = function (old, min, max) {};
 
 test('Round to n decimal place', t => {
     var a;
@@ -82,30 +83,30 @@ test('Round to n significant figures', t => {
     var num;
     var temp;
     var p = 3;
-    
+
     for (a = 0; a < b; a++) {
         num = belt.gen.random(0, 10);
-        
+
         temp = math.roundSF(num, p).toString();
         // Leave only significant figures.
         temp = temp.replace(/(?:^0+)|\.|(?:0+$)/g, '');
         temp = temp.trim('0');
-        
+
         t.true(temp.length <= p);
     }
 });
 
-test('Sum numbers in an array', t =>  {
-    t.is(math.sum([1,2,3,4,5,6]), 21);
-    t.is(math.sum([18,84,68,161,68,1]), 400);
-    t.is(math.sum([165,5648,0,687,1,8,4,6]), 6519);
-    t.is(math.sum([6844,984987,357,9,198,0.58,5.684]), 992401.264);
+test('Sum numbers in an array', t => {
+    t.is(math.sum([1, 2, 3, 4, 5, 6]), 21);
+    t.is(math.sum([18, 84, 68, 161, 68, 1]), 400);
+    t.is(math.sum([165, 5648, 0, 687, 1, 8, 4, 6]), 6519);
+    t.is(math.sum([6844, 984987, 357, 9, 198, 0.58, 5.684]), 992401.264);
     t.is(math.sum([0.803662, 0.981136, 0.369132, 0.498354, 0.067417, 0.422276]), 3.141977);
-})
+});
 
 test('Single dimention product sum', t => {
-    t.is(math.productSum([1,1,1],[1,1,1]), 3);
-    t.is(math.productSum([1,2,1],[1,1,1]), 4);
+    t.is(math.productSum([1, 1, 1], [1, 1, 1]), 3);
+    t.is(math.productSum([1, 2, 1], [1, 1, 1]), 4);
     t.is(math.productSum(
         [0.803662, 0.981136, 0.369132, 0.498354, 0.067417, 0.422276],
         [0.193649, 0.519878, 0.563662, 0.385040, 0.395856, 0.553702]
@@ -121,22 +122,22 @@ test('Single dimention product sum', t => {
 });
 test('Multi dimention product sum', t => {
     t.is(math.productSum([
-        [1,1,1],
-        [1,1,1],
-        [1,1,1]
-    ],[
-        [1,1,1],
-        [1,1,1],
-        [1,1,1]
+        [1, 1, 1],
+        [1, 1, 1],
+        [1, 1, 1]
+    ], [
+        [1, 1, 1],
+        [1, 1, 1],
+        [1, 1, 1]
     ]), 9);
     t.is(math.productSum([
-        [1,2,3],
-        [4,5,6],
-        [7,8,9]
-    ],[
-        [1,1,1],
-        [1,1,1],
-        [1,1,1]
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9]
+    ], [
+        [1, 1, 1],
+        [1, 1, 1],
+        [1, 1, 1]
     ]), 45);
     t.is(math.productSum([
         [0.803662, 0.981136, 0.369132, 0.498354, 0.067417, 0.422276],
@@ -145,7 +146,7 @@ test('Multi dimention product sum', t => {
         [0.807844, 0.065858, 0.878722, 0.467325, 0.743167, 0.179488],
         [0.080759, 0.547340, 0.385102, 0.297765, 0.033439, 0.389591],
         [0.852762, 0.233002, 0.854950, 0.393176, 0.153687, 0.331072]
-    ],[
+    ], [
         [0.990439, 0.024766, 0.840315, 0.781559, 0.989145, 0.590250],
         [0.789280, 0.151726, 0.362757, 0.729702, 0.603019, 0.407630],
         [0.043634, 0.000459, 0.393417, 0.849023, 0.507342, 0.440948],
@@ -160,7 +161,7 @@ test('Multi dimention product sum', t => {
         [0.619274, 0.189138, 0.406118, 0.232300, 0.459636, 0.659042],
         [0.639527, 0.501506, 0.979046, 0.943030, 0.201164, 0.457331],
         [0.208213, 0.910542, 0.953414, 0.671509, 0.290860, 0.865424]
-    ],[
+    ], [
         [0.393453, 0.397436, 0.041926, 0.416876, 0.978251, 0.585167],
         [0.352840, 0.019615, 0.162845, 0.642887, 0.602894, 0.904657],
         [0.375133, 0.267069, 0.728082, 0.972202, 0.718709, 0.408076],
@@ -175,7 +176,7 @@ test('Multi dimention product sum', t => {
         [0.384724, 0.593798, 0.125148, 0.100025, 0.899154, 0.751918],
         [0.072888, 0.748325, 0.504053, 0.869402, 0.217107, 0.845758],
         [0.542845, 0.895434, 0.427314, 0.508583, 0.329240, 0.844736]
-    ],[
+    ], [
         [0.261068, 0.247908, 0.310235, 0.496927, 0.421863, 0.861802],
         [0.174037, 0.174472, 0.186228, 0.405183, 0.047277, 0.374637],
         [0.339091, 0.275485, 0.075566, 0.879784, 0.924691, 0.148136],
@@ -190,7 +191,7 @@ test('Multi dimention product sum', t => {
         [0.314488, 0.249691, 0.217221, 0.233531, 0.622024, 0.458223],
         [0.223538, 0.648111, 0.836051, 0.438379, 0.931157, 0.539352],
         [0.243732, 0.592963, 0.281144, 0.710032, 0.456435, 0.183381]
-    ],[
+    ], [
         [0.375112, 0.317058, 0.300178, 0.715816, 0.834361, 0.786238],
         [0.918165, 0.973306, 0.894016, 0.915598, 0.784268, 0.261158],
         [0.533211, 0.030133, 0.761857, 0.669567, 0.903450, 0.650101],
@@ -205,7 +206,7 @@ test('Multi dimention product sum', t => {
         [0.786247, 0.053099, 0.533208, 0.766231, 0.548241, 0.918907],
         [0.461483, 0.344937, 0.701807, 0.119315, 0.633302, 0.325637],
         [0.814071, 0.036110, 0.067975, 0.842754, 0.323406, 0.079325]
-    ],[
+    ], [
         [0.527008, 0.550103, 0.349809, 0.413335, 0.027296, 0.597245],
         [0.652070, 0.741972, 0.582953, 0.318411, 0.645327, 0.106631],
         [0.187356, 0.191903, 0.008367, 0.643230, 0.339159, 0.184464],
@@ -216,8 +217,8 @@ test('Multi dimention product sum', t => {
 });
 
 test('Calculate mean', t => {
-    t.is(math.mean([1,1,1]), 1);
-    t.is(math.mean([1,2,3]), 2);
+    t.is(math.mean([1, 1, 1]), 1);
+    t.is(math.mean([1, 2, 3]), 2);
     t.is(math.mean([0.5, 1.5]), 1);
     t.is(math.mean([0.889520, 0.042144, 0.113395, 0.890859, 0.336715, 0.608866]), 0.4802498333333333);
     t.is(math.mean([0.067317, 0.804039, 0.686859, 0.957869, 0.572379, 0.351743]), 0.5733676666666666);
@@ -232,8 +233,8 @@ test('Calculate mean', t => {
 });
 
 test('Calculate Population Standard Deviation', t => {
-    t.is(math.standardDeviation([1,1,1]), 0);
-    t.is(math.standardDeviation([1,2,3]), 0.816496580927726);
+    t.is(math.standardDeviation([1, 1, 1]), 0);
+    t.is(math.standardDeviation([1, 2, 3]), 0.816496580927726);
     t.is(math.standardDeviation([0.5, 1.5]), 0.5);
     t.is(math.standardDeviation([0.039160, 0.479928, 0.172736, 0.280229, 0.951001, 0.509840]), 0.2938465020633883);
     t.is(math.standardDeviation([0.135651, 0.721946, 0.068511, 0.801846, 0.910453, 0.277919]), 0.3356408625329891);
@@ -247,8 +248,8 @@ test('Calculate Population Standard Deviation', t => {
     t.is(math.standardDeviation([0.377946, 0.795616, 0.674094, 0.255277, 0.128990, 0.913893]), 0.288067174990873);
 });
 test('Calculate Sample Standard Deviation', t => {
-    t.is(math.standardDeviation([1,1,1], true), 0);
-    t.is(math.standardDeviation([1,2,3], true), 1);
+    t.is(math.standardDeviation([1, 1, 1], true), 0);
+    t.is(math.standardDeviation([1, 2, 3], true), 1);
     t.is(math.standardDeviation([0.5, 1.5], true), 0.7071067811865476);
     t.is(math.standardDeviation([0.039160, 0.479928, 0.172736, 0.280229, 0.951001, 0.509840], true), 0.3218927152482123);
     t.is(math.standardDeviation([0.135651, 0.721946, 0.068511, 0.801846, 0.910453, 0.277919], true), 0.3676761432596173);
@@ -261,8 +262,8 @@ test('Calculate Sample Standard Deviation', t => {
     t.is(math.standardDeviation([0.631515, 0.507712, 0.129180, 0.318823, 0.658417, 0.350802], true), 0.20391272743872563);
     t.is(math.standardDeviation([0.377946, 0.795616, 0.674094, 0.255277, 0.128990, 0.913893], true), 0.31556177963857834);
 });
-
-var gaussianDistribution = function(coords, stdDev) {}
+/*
+var gaussianDistribution = function (coords, stdDev) {};
 
 var pythag = function (x, y) {};
 
@@ -280,3 +281,5 @@ var cosineRuleAngle = function (a, b, c) {};
 
 var sineRuleLength = function (a, A, B) {};
 var sineRuleAngle = function (a, A, b) {};
+
+// */

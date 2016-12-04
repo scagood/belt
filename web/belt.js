@@ -282,11 +282,12 @@ var belt =
 	    var mark = array.map(function () {
 	        return false;
 	    });
+	    function markMap(_, i) {
+	        return i;
+	    }
 	    for (var i = array.length - 1, u = array.length - 1; u > 0; i--) {
 	        if (!mark[i]) {
-	            var unmarked = mark.map(function (_, i) {
-	                return i;
-	            }).filter(function (j) {
+	            var unmarked = mark.map(markMap).filter(function (j) {
 	                return !mark[j] && j < i;
 	            });
 	            var j = unmarked[Math.floor(Math.random() * unmarked.length)];
@@ -446,6 +447,11 @@ var belt =
 	 * @return {Number}      The number in the new range
 	 */
 	var map = function (old, fMin, fMax, tMin, tMax) {
+	    // Catch divied by zero
+	    if (fMax - fMin === 0) {
+	        // If the range is 0 to 0 the the answer is always 0
+	        return 0;
+	    }
 	    return ((old - fMin) * (tMax - tMin) / (fMax - fMin)) + tMin;
 	};
 	/**
@@ -460,12 +466,13 @@ var belt =
 	    low = comp.isDef(low) ? low : 0;
 	    high = comp.isDef(high) ? high : 1;
 	    prob = comp.isDef(prob) ? prob : 1;
+
 	    var res;
-	    if (old < (0.5 - (prob / 2))) {
+	    if (old >= 0 && old <= (0.5 - (prob / 2))) {
 	        res = map(old, 0, (0.5 - (prob / 2)), 0, low);
-	    } else if (old > (0.5 - (prob / 2)) && old < (0.5 + (prob / 2))) {
+	    } else if (old >= (0.5 - (prob / 2)) && old <= (0.5 + (prob / 2))) {
 	        res = map(old, (0.5 - (prob / 2)), (0.5 + (prob / 2)), low, high);
-	    } else if (old >= (0.5 + (prob / 2))) {
+	    } else if (old >= (0.5 + (prob / 2)) && old <= 1) {
 	        res = map(old, (0.5 + (prob / 2)), 1, high, 1);
 	    } else {
 	        res = false;
@@ -507,7 +514,19 @@ var belt =
 	 * @return {Number}           The rounded number
 	 */
 	var roundSF = function (number, precision) {
-	    return number.toPrecision(precision);
+	    var intCount = Math.ceil(Math.log10(number));
+	    if (intCount <= 0) {
+	        return roundDP(number, precision);
+	    }
+	    if (intCount < precision) {
+	        return roundDP(number, precision - intCount);
+	    }
+
+	    number /= Math.pow(10, intCount - precision);
+	    number = Math.round(number);
+	    number *= Math.pow(10, intCount - precision);
+
+	    return number;
 	};
 
 	/**
@@ -515,7 +534,7 @@ var belt =
 	 * @param  {Array} points An array of points to get the Sum of.
 	 * @return {Number}       The Sum of the points
 	 */
-	var sum = function(points) {
+	var sum = function (points) {
 	    var sum = 0;
 	    var a;
 	    if (comp.isArray(points)) {
@@ -524,14 +543,14 @@ var belt =
 	        }
 	    }
 	    return sum;
-	}
+	};
 	/**
 	 * Summing the products of to Arrays
 	 * @param  {Array} m1 The first matrix
 	 * @param  {Array} m2 The second matrix
 	 * @return {Number}   The sum of the products
 	 */
-	var productSum = function(m1, m2) {
+	var productSum = function (m1, m2) {
 	    var sum = 0;
 	    var a;
 
@@ -539,37 +558,36 @@ var belt =
 	        return 0;
 	    }
 
-	    for(a = 0; a < m1.length; a++) {
+	    for (a = 0; a < m1.length; a++) {
 	        if (comp.isArray(m1[a]) && comp.isArray(m2[a])) {
 	            sum += productSum(m1[a], m2[a]);
 	        } else if (comp.isNumber(m1[a]) && comp.isNumber(m2[a])) {
 	            sum += m1[a] * m2[a];
 	        } else {
 	            throw new Error('Arrays don\'t match.');
-	            break;
 	        }
 	    }
 
 	    return sum;
-	}
+	};
 
 	/**
 	 * Calculate the Mean of 'points'
 	 * @param  {Array} points An array of points to get the Mean of.
 	 * @return {Number}       The Mean of the points
 	 */
-	var mean = function(points) {
+	var mean = function (points) {
 	    var mean = sum(points);
 	    mean /= points.length;
 	    return mean;
-	}
+	};
 	/**
 	 * Calculate the Standard Deviation of 'points'
 	 * @param  {Array} points   An array of points to get the Standard Deviation of.
 	 * @param  {Boolean} sample Is this a sample of the population
 	 * @return {Number}         The Standard Deviation of the points
 	 */
-	var standardDeviation = function(points, sample) {
+	var standardDeviation = function (points, sample) {
 	    var m = mean(points);
 	    var stdDev = 0;
 	    var a;
@@ -577,12 +595,11 @@ var belt =
 	        for (a = 0; a < points.length; a++) {
 	            stdDev += Math.pow(points[a] - m, 2);
 	        }
-	        stdDev /= points.length - (sample===true?1:0);
+	        stdDev /= points.length - (sample === true ? 1 : 0);
 	        stdDev = Math.pow(stdDev, 0.5);
-
 	    }
 	    return stdDev;
-	}
+	};
 
 	/**
 	 * Find the value of points 'coords' in an n dimentional Gaussian Distribution
@@ -590,8 +607,8 @@ var belt =
 	 * @param  {Number} stdDev The Standard Deviation to be used on calculating the curve
 	 * @return {Number}        The probability at 'coords'
 	 */
-	var gaussianDistribution = function(coords, stdDev) {
-	    stdDev = typeof stdDev === "undefined" ? 1 : stdDev;
+	var gaussianDistribution = function (coords, stdDev) {
+	    stdDev = typeof stdDev === 'undefined' ? 1 : stdDev;
 	    var a;
 	    var b = 0;
 	    var c = 0;
@@ -602,8 +619,8 @@ var belt =
 	    c = Math.pow(2 * Math.PI, 0.5) * stdDev;
 	    c = Math.pow(c, coords.length);
 
-	    return (1 / c) * Math.pow(Math.E, -b/(2*stdDev*stdDev));
-	}
+	    return (1 / c) * Math.pow(Math.E, -b / (2 * stdDev * stdDev));
+	};
 
 	/**
 	 * Perform pythagoras' theorum
@@ -765,10 +782,10 @@ var belt =
 	    roundDP: roundDP,
 	    roundSF: roundSF,
 	    sum: sum,
+	    mean: mean,
 	    productSum: productSum,
 	    standardDeviation: standardDeviation,
 	    gaussianDistribution: gaussianDistribution,
-	    roundSF: roundSF,
 	    pythag: pythag,
 	    toDegrees: toDegrees,
 	    toRadians: toRadians,

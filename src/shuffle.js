@@ -18,11 +18,12 @@ var derangePD = function (array) {
     var mark = array.map(function () {
         return false;
     });
+    function markMap(_, i) {
+        return i;
+    }
     for (var i = array.length - 1, u = array.length - 1; u > 0; i--) {
         if (!mark[i]) {
-            var unmarked = mark.map(function (_, i) {
-                return i;
-            }).filter(function (j) {
+            var unmarked = mark.map(markMap).filter(function (j) {
                 return !mark[j] && j < i;
             });
             var j = unmarked[Math.floor(Math.random() * unmarked.length)];

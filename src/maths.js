@@ -97,7 +97,7 @@ var roundSF = function (number, precision) {
  * @param  {Array} points An array of points to get the Sum of.
  * @return {Number}       The Sum of the points
  */
-var sum = function(points) {
+var sum = function (points) {
     var sum = 0;
     var a;
     if (comp.isArray(points)) {
@@ -106,14 +106,14 @@ var sum = function(points) {
         }
     }
     return sum;
-}
+};
 /**
  * Summing the products of to Arrays
  * @param  {Array} m1 The first matrix
  * @param  {Array} m2 The second matrix
  * @return {Number}   The sum of the products
  */
-var productSum = function(m1, m2) {
+var productSum = function (m1, m2) {
     var sum = 0;
     var a;
 
@@ -121,37 +121,36 @@ var productSum = function(m1, m2) {
         return 0;
     }
 
-    for(a = 0; a < m1.length; a++) {
+    for (a = 0; a < m1.length; a++) {
         if (comp.isArray(m1[a]) && comp.isArray(m2[a])) {
             sum += productSum(m1[a], m2[a]);
         } else if (comp.isNumber(m1[a]) && comp.isNumber(m2[a])) {
             sum += m1[a] * m2[a];
         } else {
             throw new Error('Arrays don\'t match.');
-            break;
         }
     }
 
     return sum;
-}
+};
 
 /**
  * Calculate the Mean of 'points'
  * @param  {Array} points An array of points to get the Mean of.
  * @return {Number}       The Mean of the points
  */
-var mean = function(points) {
+var mean = function (points) {
     var mean = sum(points);
     mean /= points.length;
     return mean;
-}
+};
 /**
  * Calculate the Standard Deviation of 'points'
  * @param  {Array} points   An array of points to get the Standard Deviation of.
  * @param  {Boolean} sample Is this a sample of the population
  * @return {Number}         The Standard Deviation of the points
  */
-var standardDeviation = function(points, sample) {
+var standardDeviation = function (points, sample) {
     var m = mean(points);
     var stdDev = 0;
     var a;
@@ -159,12 +158,11 @@ var standardDeviation = function(points, sample) {
         for (a = 0; a < points.length; a++) {
             stdDev += Math.pow(points[a] - m, 2);
         }
-        stdDev /= points.length - (sample===true?1:0);
+        stdDev /= points.length - (sample === true ? 1 : 0);
         stdDev = Math.pow(stdDev, 0.5);
-
     }
     return stdDev;
-}
+};
 
 /**
  * Find the value of points 'coords' in an n dimentional Gaussian Distribution
@@ -172,8 +170,8 @@ var standardDeviation = function(points, sample) {
  * @param  {Number} stdDev The Standard Deviation to be used on calculating the curve
  * @return {Number}        The probability at 'coords'
  */
-var gaussianDistribution = function(coords, stdDev) {
-    stdDev = typeof stdDev === "undefined" ? 1 : stdDev;
+var gaussianDistribution = function (coords, stdDev) {
+    stdDev = typeof stdDev === 'undefined' ? 1 : stdDev;
     var a;
     var b = 0;
     var c = 0;
@@ -184,8 +182,8 @@ var gaussianDistribution = function(coords, stdDev) {
     c = Math.pow(2 * Math.PI, 0.5) * stdDev;
     c = Math.pow(c, coords.length);
 
-    return (1 / c) * Math.pow(Math.E, -b/(2*stdDev*stdDev));
-}
+    return (1 / c) * Math.pow(Math.E, -b / (2 * stdDev * stdDev));
+};
 
 /**
  * Perform pythagoras' theorum
@@ -351,7 +349,6 @@ module.exports = {
     productSum: productSum,
     standardDeviation: standardDeviation,
     gaussianDistribution: gaussianDistribution,
-    roundSF: roundSF,
     pythag: pythag,
     toDegrees: toDegrees,
     toRadians: toRadians,
