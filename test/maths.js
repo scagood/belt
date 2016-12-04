@@ -262,24 +262,16 @@ test('Calculate Sample Standard Deviation', t => {
     t.is(math.standardDeviation([0.631515, 0.507712, 0.129180, 0.318823, 0.658417, 0.350802], true), 0.20391272743872563);
     t.is(math.standardDeviation([0.377946, 0.795616, 0.674094, 0.255277, 0.128990, 0.913893], true), 0.31556177963857834);
 });
-/*
-var gaussianDistribution = function (coords, stdDev) {};
 
-var pythag = function (x, y) {};
-
-var toDegrees = function (angle) {};
-var toRadians = function (angle) {};
-
-var distance = function (x1, y1, x2, y2) {};
-var angle = function (x1, y1, x2, y2) {};
-
-var toPolar = function (x, y) {};
-var toCartesian = function (r, theta, radians) {};
-
-var cosineRuleLength = function (a, b, C) {};
-var cosineRuleAngle = function (a, b, c) {};
-
-var sineRuleLength = function (a, A, B) {};
-var sineRuleAngle = function (a, A, b) {};
-
-// */
+test.todo('gaussianDistribution(coords, stdDev)');
+test.todo('pythag(x, y)');
+test.todo('toDegrees(angle)');
+test.todo('toRadians(angle)');
+test.todo('distance(x1, y1, x2, y2)');
+test.todo('angle(x1, y1, x2, y2)');
+test.todo('toPolar(x, y)');
+test.todo('toCartesian(r, theta, radians)');
+test.todo('cosineRuleLength(a, b, C)');
+test.todo('cosineRuleAngle(a, b, c)');
+test.todo('sineRuleLength(a, A, B)');
+test.todo('sineRuleAngle(a, A, b)');
