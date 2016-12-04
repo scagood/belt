@@ -82,13 +82,41 @@ var roundSF = function (number, precision) {
 var sum = function(points) {
     var sum = 0;
     var a;
-    if (belt.compare.isArray(points)) {
+    if (comp.isArray(points)) {
         for (a = 0; a < points.length; a++) {
             sum += points[a];
         }
     }
     return sum;
 }
+/**
+ * Summing the products of to Arrays
+ * @param  {Array} m1 The first matrix
+ * @param  {Array} m2 The second matrix
+ * @return {Number}   The sum of the products
+ */
+var productSum = function(m1, m2) {
+    var sum = 0;
+    var a;
+
+    if (m1.length !== m2.length) {
+        return 0;
+    }
+
+    for(a = 0; a < m1.length; a++) {
+        if (belt.compare.isArray(m1[a]) && belt.compare.isArray(m2[a])) {
+            sum += productSum(m1[a], m2[a]);
+        } else if (belt.compare.isNumber(m1[a]) && belt.compare.isNumber(m2[a])) {
+            sum += m1[a] * m2[a];
+        } else {
+            throw new Error('Arrays don\'t match.');
+            break;
+        }
+    }
+
+    return sum;
+}
+
 /**
  * Calculate the Mean of 'points'
  * @param  {Array} points An array of points to get the Mean of.
@@ -109,7 +137,7 @@ var standardDeviation = function(points, sample) {
     var m = mean(points);
     var stdDev = 0;
     var a;
-    if (belt.compare.isArray(points)) {
+    if (comp.isArray(points)) {
         for (a = 0; a < points.length; a++) {
             stdDev += Math.pow(points[a] - m, 2);
         }
@@ -122,7 +150,7 @@ var standardDeviation = function(points, sample) {
 
 /**
  * Find the value of points 'coords' in an n dimentional Gaussian Distribution
- * @param  {Array} coords   An 'N' dimentional array of coordinates
+ * @param  {Array} coords  An 'N' dimentional array of coordinates
  * @param  {Number} stdDev The Standard Deviation to be used on calculating the curve
  * @return {Number}        The probability at 'coords'
  */
@@ -301,6 +329,7 @@ module.exports = {
     roundDP: roundDP,
     roundSF: roundSF,
     sum: sum,
+    productSum: productSum,
     standardDeviation: standardDeviation,
     gaussianDistribution: gaussianDistribution,
     roundSF: roundSF,

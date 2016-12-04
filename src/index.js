@@ -6,6 +6,7 @@ var generator = require('./generator');
 module.exports = {
     compare: compare,
     generator: generator,
+    gen: generator,
     math: maths,
     maths: maths,
     shuffle: shuffle

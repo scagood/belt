@@ -16,6 +16,21 @@
 <dt><a href="#roundSF">roundSF(number, precision)</a> ⇒ <code>Number</code></dt>
 <dd><p>Round &#39;number&#39; to &#39;precision&#39; significant figures</p>
 </dd>
+<dt><a href="#sum">sum(points)</a> ⇒ <code>Number</code></dt>
+<dd><p>Calculate the Sum of &#39;points&#39;</p>
+</dd>
+<dt><a href="#productSum">productSum(m1, m2)</a> ⇒ <code>Number</code></dt>
+<dd><p>Summing the products of to Arrays</p>
+</dd>
+<dt><a href="#mean">mean(points)</a> ⇒ <code>Number</code></dt>
+<dd><p>Calculate the Mean of &#39;points&#39;</p>
+</dd>
+<dt><a href="#standardDeviation">standardDeviation(points, sample)</a> ⇒ <code>Number</code></dt>
+<dd><p>Calculate the Standard Deviation of &#39;points&#39;</p>
+</dd>
+<dt><a href="#gaussianDistribution">gaussianDistribution(coords, stdDev)</a> ⇒ <code>Number</code></dt>
+<dd><p>Find the value of points &#39;coords&#39; in an n dimentional Gaussian Distribution</p>
+</dd>
 <dt><a href="#pythag">pythag(x, y)</a> ⇒ <code>Number</code></dt>
 <dd><p>Perform pythagoras&#39; theorum</p>
 </dd>
@@ -130,6 +145,69 @@ Round 'number' to 'precision' significant figures
 | --- | --- | --- |
 | number | <code>Number</code> | The number to round |
 | precision | <code>Number</code> | The number of significant figures |
+
+<a name="sum"></a>
+
+## sum(points) ⇒ <code>Number</code>
+Calculate the Sum of 'points'
+
+**Kind**: global function  
+**Returns**: <code>Number</code> - The Sum of the points  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| points | <code>Array</code> | An array of points to get the Sum of. |
+
+<a name="productSum"></a>
+
+## productSum(m1, m2) ⇒ <code>Number</code>
+Summing the products of to Arrays
+
+**Kind**: global function  
+**Returns**: <code>Number</code> - The sum of the products  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| m1 | <code>Array</code> | The first matrix |
+| m2 | <code>Array</code> | The second matrix |
+
+<a name="mean"></a>
+
+## mean(points) ⇒ <code>Number</code>
+Calculate the Mean of 'points'
+
+**Kind**: global function  
+**Returns**: <code>Number</code> - The Mean of the points  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| points | <code>Array</code> | An array of points to get the Mean of. |
+
+<a name="standardDeviation"></a>
+
+## standardDeviation(points, sample) ⇒ <code>Number</code>
+Calculate the Standard Deviation of 'points'
+
+**Kind**: global function  
+**Returns**: <code>Number</code> - The Standard Deviation of the points  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| points | <code>Array</code> | An array of points to get the Standard Deviation of. |
+| sample | <code>Boolean</code> | Is this a sample of the population |
+
+<a name="gaussianDistribution"></a>
+
+## gaussianDistribution(coords, stdDev) ⇒ <code>Number</code>
+Find the value of points 'coords' in an n dimentional Gaussian Distribution
+
+**Kind**: global function  
+**Returns**: <code>Number</code> - The probability at 'coords'  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| coords | <code>Array</code> | An 'N' dimentional array of coordinates |
+| stdDev | <code>Number</code> | The Standard Deviation to be used on calculating the curve |
 
 <a name="pythag"></a>
 

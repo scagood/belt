@@ -1,6 +1,6 @@
 {
   "name": "belt.js",
-  "version": "0.3.3",
+  "version": "0.4.2",
   "description": "A toolkit",
   "main": "src/index.js",
   "scripts": {
