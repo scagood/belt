@@ -10,6 +10,11 @@ var comp = require('./compare');
  * @return {Number}      The number in the new range
  */
 var map = function (old, fMin, fMax, tMin, tMax) {
+    // Catch divied by zero
+    if (fMax - fMin === 0) {
+        // If the range is 0 to 0 the the answer is always 0
+        return 0;
+    }
     return ((old - fMin) * (tMax - tMin) / (fMax - fMin)) + tMin;
 };
 /**
@@ -24,12 +29,13 @@ var probMap = function (old, low, high, prob) {
     low = comp.isDef(low) ? low : 0;
     high = comp.isDef(high) ? high : 1;
     prob = comp.isDef(prob) ? prob : 1;
+
     var res;
-    if (old < (0.5 - (prob / 2))) {
+    if (old >= 0 && old <= (0.5 - (prob / 2))) {
         res = map(old, 0, (0.5 - (prob / 2)), 0, low);
-    } else if (old > (0.5 - (prob / 2)) && old < (0.5 + (prob / 2))) {
+    } else if (old >= (0.5 - (prob / 2)) && old <= (0.5 + (prob / 2))) {
         res = map(old, (0.5 - (prob / 2)), (0.5 + (prob / 2)), low, high);
-    } else if (old > (0.5 + (prob / 2))) {
+    } else if (old >= (0.5 + (prob / 2)) && old <= 1) {
         res = map(old, (0.5 + (prob / 2)), 1, high, 1);
     } else {
         res = false;
@@ -71,7 +77,19 @@ var roundDP = function (number, precision) {
  * @return {Number}           The rounded number
  */
 var roundSF = function (number, precision) {
-    return number.toPrecision(precision);
+    var intCount = Math.ceil(Math.log10(number));
+    if (intCount <= 0) {
+        return roundDP(number, precision);
+    }
+    if (intCount < precision) {
+        return roundDP(number, precision - intCount);
+    }
+
+    number /= Math.pow(10, intCount - precision);
+    number = Math.round(number);
+    number *= Math.pow(10, intCount - precision);
+
+    return number;
 };
 
 /**
@@ -104,9 +122,9 @@ var productSum = function(m1, m2) {
     }
 
     for(a = 0; a < m1.length; a++) {
-        if (belt.compare.isArray(m1[a]) && belt.compare.isArray(m2[a])) {
+        if (comp.isArray(m1[a]) && comp.isArray(m2[a])) {
             sum += productSum(m1[a], m2[a]);
-        } else if (belt.compare.isNumber(m1[a]) && belt.compare.isNumber(m2[a])) {
+        } else if (comp.isNumber(m1[a]) && comp.isNumber(m2[a])) {
             sum += m1[a] * m2[a];
         } else {
             throw new Error('Arrays don\'t match.');
@@ -329,6 +347,7 @@ module.exports = {
     roundDP: roundDP,
     roundSF: roundSF,
     sum: sum,
+    mean: mean,
     productSum: productSum,
     standardDeviation: standardDeviation,
     gaussianDistribution: gaussianDistribution,
