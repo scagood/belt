@@ -1,3 +1,10 @@
+/**
+ * The maths module of belt.js
+ * @module maths
+ */
+
+'use strict';
+
 var comp = require('./compare');
 
 /**
@@ -98,14 +105,18 @@ var roundSF = function (number, precision) {
  * @return {Number}       The Sum of the points
  */
 var sum = function (points) {
-    var sum = 0;
+    var total = 0;
     var a;
     if (comp.isArray(points)) {
         for (a = 0; a < points.length; a++) {
-            sum += points[a];
+            total += sum(points[a]);
         }
+    } else if (comp.isNumber(points)) {
+        total += points;
+    } else {
+        total = false;
     }
-    return sum;
+    return total;
 };
 /**
  * Summing the products of to Arrays
