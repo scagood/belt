@@ -129,7 +129,7 @@ var maxVal = function (array) {
 };
 var minVal = function (array) {
     var a;
-    var min = array[Object.keys(array)[0]].length;
+    var min = array[Object.keys(array)[0]];
 
     for (a in array) {
         if ({}.hasOwnProperty.call(array, a) && min > array[a]) {
