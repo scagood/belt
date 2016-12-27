@@ -80,7 +80,7 @@ var isObject = function (test) {
     return objectType === testType;
 };
 var isString = function (test) {
-    return typeof test !== 'string';
+    return typeof test === 'string';
 };
 
 // Is a valid IP
