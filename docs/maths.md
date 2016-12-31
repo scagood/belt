@@ -10,10 +10,7 @@ The maths module of belt.js
     * [~moveToBounds(old, min, max)](#module_maths..moveToBounds) ⇒ <code>Number</code>
     * [~roundDP(number, precision)](#module_maths..roundDP) ⇒ <code>Number</code>
     * [~roundSF(number, precision)](#module_maths..roundSF) ⇒ <code>Number</code>
-    * [~sum(points)](#module_maths..sum) ⇒ <code>Number</code>
     * [~productSum(m1, m2)](#module_maths..productSum) ⇒ <code>Number</code>
-    * [~mean(points)](#module_maths..mean) ⇒ <code>Number</code>
-    * [~standardDeviation(points, sample)](#module_maths..standardDeviation) ⇒ <code>Number</code>
     * [~gaussianDistribution(coords, stdDev)](#module_maths..gaussianDistribution) ⇒ <code>Number</code>
     * [~pythag(x, y)](#module_maths..pythag) ⇒ <code>Number</code>
     * [~toDegrees(angle)](#module_maths..toDegrees) ⇒ <code>Number</code>
@@ -100,18 +97,6 @@ Round 'number' to 'precision' significant figures
 | number | <code>Number</code> | The number to round |
 | precision | <code>Number</code> | The number of significant figures |
 
-<a name="module_maths..sum"></a>
-
-### maths~sum(points) ⇒ <code>Number</code>
-Calculate the Sum of 'points'
-
-**Kind**: inner method of <code>[maths](#module_maths)</code>  
-**Returns**: <code>Number</code> - The Sum of the points  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| points | <code>Array</code> | An array of points to get the Sum of. |
-
 <a name="module_maths..productSum"></a>
 
 ### maths~productSum(m1, m2) ⇒ <code>Number</code>
@@ -124,31 +109,6 @@ Summing the products of to Arrays
 | --- | --- | --- |
 | m1 | <code>Array</code> | The first matrix |
 | m2 | <code>Array</code> | The second matrix |
-
-<a name="module_maths..mean"></a>
-
-### maths~mean(points) ⇒ <code>Number</code>
-Calculate the Mean of 'points'
-
-**Kind**: inner method of <code>[maths](#module_maths)</code>  
-**Returns**: <code>Number</code> - The Mean of the points  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| points | <code>Array</code> | An array of points to get the Mean of. |
-
-<a name="module_maths..standardDeviation"></a>
-
-### maths~standardDeviation(points, sample) ⇒ <code>Number</code>
-Calculate the Standard Deviation of 'points'
-
-**Kind**: inner method of <code>[maths](#module_maths)</code>  
-**Returns**: <code>Number</code> - The Standard Deviation of the points  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| points | <code>Array</code> | An array of points to get the Standard Deviation of. |
-| sample | <code>Boolean</code> | Is this a sample of the population |
 
 <a name="module_maths..gaussianDistribution"></a>
 

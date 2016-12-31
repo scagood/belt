@@ -9,8 +9,8 @@ var comp = require('./compare');
 
 /**
  * Dissasociates init from return
- * @param {Array} init  The element to dissasociate
- * @param {Array}       The dissasociated element
+ * @param {Array} init The element to dissasociate
+ * @returns {Array}    The dissasociated element
 * */
 var diss = function (init) {
     var clone = [];
