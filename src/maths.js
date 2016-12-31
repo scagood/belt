@@ -6,6 +6,7 @@
 'use strict';
 
 var comp = require('./compare');
+var stats = require('./stats');
 
 /**
  * A simple function to map a number from one range to another
@@ -100,25 +101,6 @@ var roundSF = function (number, precision) {
 };
 
 /**
- * Calculate the Sum of 'points'
- * @param  {Array} points An array of points to get the Sum of.
- * @return {Number}       The Sum of the points
- */
-var sum = function (points) {
-    var total = 0;
-    var a;
-    if (comp.isArray(points)) {
-        for (a = 0; a < points.length; a++) {
-            total += sum(points[a]);
-        }
-    } else if (comp.isNumber(points)) {
-        total += points;
-    } else {
-        total = false;
-    }
-    return total;
-};
-/**
  * Summing the products of to Arrays
  * @param  {Array} m1 The first matrix
  * @param  {Array} m2 The second matrix
@@ -143,36 +125,6 @@ var productSum = function (m1, m2) {
     }
 
     return sum;
-};
-
-/**
- * Calculate the Mean of 'points'
- * @param  {Array} points An array of points to get the Mean of.
- * @return {Number}       The Mean of the points
- */
-var mean = function (points) {
-    var mean = sum(points);
-    mean /= points.length;
-    return mean;
-};
-/**
- * Calculate the Standard Deviation of 'points'
- * @param  {Array} points   An array of points to get the Standard Deviation of.
- * @param  {Boolean} sample Is this a sample of the population
- * @return {Number}         The Standard Deviation of the points
- */
-var standardDeviation = function (points, sample) {
-    var m = mean(points);
-    var stdDev = 0;
-    var a;
-    if (comp.isArray(points)) {
-        for (a = 0; a < points.length; a++) {
-            stdDev += Math.pow(points[a] - m, 2);
-        }
-        stdDev /= points.length - (sample === true ? 1 : 0);
-        stdDev = Math.pow(stdDev, 0.5);
-    }
-    return stdDev;
 };
 
 /**
@@ -202,10 +154,12 @@ var gaussianDistribution = function (coords, stdDev) {
  * @param  {Number} y Length of 'adjacent side'
  * @return {Number}   Length of 'hypotenuse'
  */
-var pythag = function (x, y) {
-    x = Math.pow(x, 2);
-    y = Math.pow(y, 2);
-    return Math.pow(x + y, 0.5);
+var pythag = function (x) {
+    if (!comp.isDef(x)) {
+        return 0;
+    }
+    var sum = stats.sumOfSquares(arguments, true);
+    return Math.pow(sum, 0.5);
 };
 
 /**
@@ -355,10 +309,7 @@ module.exports = {
     moveToBounds: moveToBounds,
     roundDP: roundDP,
     roundSF: roundSF,
-    sum: sum,
-    mean: mean,
     productSum: productSum,
-    standardDeviation: standardDeviation,
     gaussianDistribution: gaussianDistribution,
     pythag: pythag,
     toDegrees: toDegrees,

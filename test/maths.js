@@ -1,8 +1,8 @@
+'use strict';
 import test from 'ava';
 
-var belt = require('../');
-
-var math = belt.maths;
+var math = require('../').math;
+var gen = require('../').gen;
 
 // Map tests
 test('Map performs within bounds', t => {
@@ -72,8 +72,9 @@ test('Round to n decimal place', t => {
     var temp;
     var p = 3;
     for (a = 0; a < b; a++) {
-        temp = belt.gen.random(0, 10000);
-        temp = math.roundDP(temp, p).toString().split('.')[1].length;
+        temp = gen.random(0, 10000);
+        temp = math.roundDP(temp, p).toString().split('.');
+        temp = typeof temp[1] === 'undefined' ? 0 : temp[1].length;
         t.true(temp <= p);
     }
 });
@@ -85,7 +86,7 @@ test('Round to n significant figures', t => {
     var p = 3;
 
     for (a = 0; a < b; a++) {
-        num = belt.gen.random(0, 10);
+        num = gen.random(0, 10);
 
         temp = math.roundSF(num, p).toString();
         // Leave only significant figures.
@@ -94,14 +95,6 @@ test('Round to n significant figures', t => {
 
         t.true(temp.length <= p);
     }
-});
-
-test('Sum numbers in an array', t => {
-    t.is(math.sum([1, 2, 3, 4, 5, 6]), 21);
-    t.is(math.sum([18, 84, 68, 161, 68, 1]), 400);
-    t.is(math.sum([165, 5648, 0, 687, 1, 8, 4, 6]), 6519);
-    t.is(math.sum([6844, 984987, 357, 9, 198, 0.58, 5.684]), 992401.264);
-    t.is(math.sum([0.803662, 0.981136, 0.369132, 0.498354, 0.067417, 0.422276]), 3.141977);
 });
 
 test('Single dimention product sum', t => {
@@ -214,53 +207,6 @@ test('Multi dimention product sum', t => {
         [0.616206, 0.416541, 0.425010, 0.421611, 0.463417, 0.768652],
         [0.863313, 0.368604, 0.703122, 0.188429, 0.295814, 0.358591]
     ]), 8.420263780803001);
-});
-
-test('Calculate mean', t => {
-    t.is(math.mean([1, 1, 1]), 1);
-    t.is(math.mean([1, 2, 3]), 2);
-    t.is(math.mean([0.5, 1.5]), 1);
-    t.is(math.mean([0.889520, 0.042144, 0.113395, 0.890859, 0.336715, 0.608866]), 0.4802498333333333);
-    t.is(math.mean([0.067317, 0.804039, 0.686859, 0.957869, 0.572379, 0.351743]), 0.5733676666666666);
-    t.is(math.mean([0.379507, 0.358194, 0.466072, 0.945494, 0.377742, 0.598394]), 0.5209005);
-    t.is(math.mean([0.960061, 0.947917, 0.195644, 0.858921, 0.430809, 0.385005]), 0.6297261666666667);
-    t.is(math.mean([0.962196, 0.531673, 0.469229, 0.669506, 0.739490, 0.576841]), 0.6581558333333334);
-    t.is(math.mean([0.110768, 0.192788, 0.903153, 0.033028, 0.634472, 0.516733]), 0.39849033333333334);
-    t.is(math.mean([0.293291, 0.832718, 0.910606, 0.254581, 0.880108, 0.080404]), 0.5419513333333333);
-    t.is(math.mean([0.147728, 0.150743, 0.787755, 0.277249, 0.340336, 0.298740]), 0.3337585);
-    t.is(math.mean([0.325505, 0.613098, 0.785858, 0.516854, 0.274867, 0.373144]), 0.48155433333333336);
-    t.is(math.mean([0.040602, 0.951995, 0.433059, 0.733258, 0.805332, 0.771230]), 0.6225793333333334);
-});
-
-test('Calculate Population Standard Deviation', t => {
-    t.is(math.standardDeviation([1, 1, 1]), 0);
-    t.is(math.standardDeviation([1, 2, 3]), 0.816496580927726);
-    t.is(math.standardDeviation([0.5, 1.5]), 0.5);
-    t.is(math.standardDeviation([0.039160, 0.479928, 0.172736, 0.280229, 0.951001, 0.509840]), 0.2938465020633883);
-    t.is(math.standardDeviation([0.135651, 0.721946, 0.068511, 0.801846, 0.910453, 0.277919]), 0.3356408625329891);
-    t.is(math.standardDeviation([0.243493, 0.726105, 0.433715, 0.177424, 0.705072, 0.686156]), 0.2243308111760769);
-    t.is(math.standardDeviation([0.666985, 0.613706, 0.727950, 0.137046, 0.218014, 0.673549]), 0.23590745094115947);
-    t.is(math.standardDeviation([0.039838, 0.961914, 0.128555, 0.942817, 0.913701, 0.552287]), 0.3839735341357092);
-    t.is(math.standardDeviation([0.319472, 0.936252, 0.020962, 0.614555, 0.712406, 0.734566]), 0.30182204048104055);
-    t.is(math.standardDeviation([0.853676, 0.861009, 0.809062, 0.191420, 0.149629, 0.251733]), 0.3235965389847621);
-    t.is(math.standardDeviation([0.413456, 0.539293, 0.690883, 0.751103, 0.274134, 0.204435]), 0.20175135130815522);
-    t.is(math.standardDeviation([0.631515, 0.507712, 0.129180, 0.318823, 0.658417, 0.350802]), 0.18614600096765443);
-    t.is(math.standardDeviation([0.377946, 0.795616, 0.674094, 0.255277, 0.128990, 0.913893]), 0.288067174990873);
-});
-test('Calculate Sample Standard Deviation', t => {
-    t.is(math.standardDeviation([1, 1, 1], true), 0);
-    t.is(math.standardDeviation([1, 2, 3], true), 1);
-    t.is(math.standardDeviation([0.5, 1.5], true), 0.7071067811865476);
-    t.is(math.standardDeviation([0.039160, 0.479928, 0.172736, 0.280229, 0.951001, 0.509840], true), 0.3218927152482123);
-    t.is(math.standardDeviation([0.135651, 0.721946, 0.068511, 0.801846, 0.910453, 0.277919], true), 0.3676761432596173);
-    t.is(math.standardDeviation([0.243493, 0.726105, 0.433715, 0.177424, 0.705072, 0.686156], true), 0.24574209124913868);
-    t.is(math.standardDeviation([0.666985, 0.613706, 0.727950, 0.137046, 0.218014, 0.673549], true), 0.25842366472803274);
-    t.is(math.standardDeviation([0.039838, 0.961914, 0.128555, 0.942817, 0.913701, 0.552287], true), 0.4206219322622157);
-    t.is(math.standardDeviation([0.319472, 0.936252, 0.020962, 0.614555, 0.712406, 0.734566], true), 0.3306294798474066);
-    t.is(math.standardDeviation([0.853676, 0.861009, 0.809062, 0.191420, 0.149629, 0.251733], true), 0.3544822478651082);
-    t.is(math.standardDeviation([0.413456, 0.539293, 0.690883, 0.751103, 0.274134, 0.204435], true), 0.22100753223725203);
-    t.is(math.standardDeviation([0.631515, 0.507712, 0.129180, 0.318823, 0.658417, 0.350802], true), 0.20391272743872563);
-    t.is(math.standardDeviation([0.377946, 0.795616, 0.674094, 0.255277, 0.128990, 0.913893], true), 0.31556177963857834);
 });
 
 test.todo('gaussianDistribution(coords, stdDev)');

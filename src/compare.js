@@ -1,5 +1,5 @@
 // Compare Objects
-var compareObjectsComplex = function (o, p) {
+var objectsComplex = function (o, p) {
     var i;
     var keysO = Object.keys(o).sort();
     var keysP = Object.keys(p).sort();
@@ -14,7 +14,7 @@ var compareObjectsComplex = function (o, p) {
             if (!(p[keysO[i]] instanceof Array)) {
                 return false;
             }
-            // if (compareObjectsComplex(o[keysO[i]], p[keysO[i]] === false) return false
+            // if (objectsComplex(o[keysO[i]], p[keysO[i]] === false) return false
             // would work, too, and perhaps is a better fit, still, this is easy, too
             if (p[keysO[i]].sort().join('') !== o[keysO[i]].sort().join('')) {
                 return false;
@@ -39,7 +39,7 @@ var compareObjectsComplex = function (o, p) {
                 if (p[keysO[i]] !== p) {
                     return false;
                 }
-            } else if (compareObjectsComplex(o[keysO[i]], p[keysO[i]]) === false) {
+            } else if (objectsComplex(o[keysO[i]], p[keysO[i]]) === false) {
                 return false;
             } // WARNING: does not deal with circular refs other than ^^
         }
@@ -50,7 +50,7 @@ var compareObjectsComplex = function (o, p) {
     }
     return true;
 };
-var compareObjectsSimple = function (o, p) {
+var objectsSimple = function (o, p) {
     return JSON.stringify(o) === JSON.stringify(p);
 };
 
@@ -72,7 +72,9 @@ var isNull = function (test) {
     return test === null;
 };
 var isNumber = function (test) {
-    return !isNaN(test);
+    var arrayType = Object.prototype.toString.call(3);
+    var testType = Object.prototype.toString.call(test);
+    return arrayType === testType;
 };
 var isObject = function (test) {
     var objectType = Object.prototype.toString.call({});
@@ -80,95 +82,40 @@ var isObject = function (test) {
     return objectType === testType;
 };
 var isString = function (test) {
-    return typeof test !== 'string';
+    return typeof test === 'string';
 };
-
-// Is a valid IP
-function isIPv4(ip) {
-    var ip4Regex = '^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).' +
-        '(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).' +
-        '(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).' +
-        '(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$';
-    ip4Regex = new RegExp(ip4Regex);
-
-    return ip4Regex.test(ip);
-}
-function isIPv6(ip) {
-    var ip6Regex = '(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|' +
-        '([0-9a-fA-F]{1,4}:){1,7}:|' +
-        '([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|' +
-        '([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|' +
-        '([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|' +
-        '([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|' +
-        '([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|' +
-        '[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|' +
-        ':((:[0-9a-fA-F]{1,4}){1,7}|:)|' +
-        'fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|' +
-        '::(ffff(:0{1,4}){0,1}:){0,1}' +
-        '((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}' +
-        '(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|' +
-        '([0-9a-fA-F]{1,4}:){1,4}:' +
-        '((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}' +
-        '(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))';
-    ip6Regex = new RegExp(ip6Regex);
-
-    return ip6Regex.test(ip);
-}
-
-// Get the heighest/lowest value in an int array
-var maxVal = function (array) {
-    var a;
-    var max = 0;
-    for (a in array) {
-        if ({}.hasOwnProperty.call(array, a) && array[a] > max) {
-            max = array[a];
-        }
+var sameType = function (type, test) {
+    var types = {
+        bool: '[object Boolean]',
+        boolean: '[object Boolean]',
+        object: '[object Object]',
+        func: '[object Function]',
+        function: '[object Function]',
+        number: '[object Number]',
+        int: '[object Number]',
+        integer: '[object Number]',
+        float: '[object Number]',
+        string: '[object String]',
+        str: '[object String]',
+        array: '[object Array]',
+        null: '[object Null]',
+        undefined: '[object Undefined]'
+    };
+    if (isString(type)) {
+        type = type.toLowerCase();
+        type = isDefined(types[type]) ? types[type] : '[object String]';
+    } else {
+        type = Object.prototype.toString.call(type);
     }
 
-    return max;
-};
-var minVal = function (array) {
-    var a;
-    var min = array[Object.keys(array)[0]].length;
-
-    for (a in array) {
-        if ({}.hasOwnProperty.call(array, a) && min > array[a]) {
-            min = array[a];
-        }
-    }
-
-    return min;
-};
-
-// Get the longest/shortest
-var maxLen = function (array) {
-    var a;
-    var max = 0;
-    for (a in array) {
-        if ({}.hasOwnProperty.call(array, a)) {
-            max = (array[a].length < max) ? max : array[a].length;
-        }
-    }
-
-    return max;
-};
-var minLen = function (array) {
-    var a;
-    var min = array[Object.keys(array)[0]].length;
-
-    for (a in array) {
-        if ({}.hasOwnProperty.call(array, a)) {
-            min = (array[a].length > min) ? min : array[a].length;
-        }
-    }
-
-    return min;
+    return type === Object.prototype.toString.call(test);
 };
 
 module.exports = {
-    compareObjects: compareObjectsSimple,
-    compareObjectsComplex: compareObjectsComplex,
-    compareObjectsSimple: compareObjectsSimple,
+    objects: objectsSimple,
+    objectsComplex: objectsComplex,
+    objectsSimple: objectsSimple,
+    sameType: sameType,
     isArr: isArray,
     isArray: isArray,
     isDef: isDefined,
@@ -181,12 +128,5 @@ module.exports = {
     isObj: isObject,
     isObject: isObject,
     isStr: isString,
-    isString: isString,
-    isIP: isIPv4,
-    isIPv4: isIPv4,
-    isIPv6: isIPv6,
-    maxVal: maxVal,
-    minVal: minVal,
-    maxLen: maxLen,
-    minLen: minLen
+    isString: isString
 };

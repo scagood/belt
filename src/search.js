@@ -2,22 +2,20 @@ var comp = require('./compare');
 
 // Extracting bits from a byte
 var bitExtraction = function (input, offset, length, intLen) {
-    var comp = 0;
+    var c = 0;
     var a;
-    if (typeof intLen === 'undefined') {
-        intLen = (Math.ceil(input.toString(2).length / 8) * 8);
-    }
 
-    length = (typeof length === 'undefined') ? 1 : length;
-    offset = (typeof offset === 'undefined') ? 0 : offset;
+    intLen = comp.isDef(intLen) ? intLen : (Math.ceil(input.toString(2).length / 8) * 8);
+    length = comp.isDef(length) ? length : 1;
+    offset = comp.isDef(offset) ? offset : 0;
 
     for (a = 0; a < length; a++) {
-        comp = (comp << 1) | 1;
+        c = (c << 1) | 1;
     }
 
-    offset = intLen - offset - comp.toString(2).length;
+    offset = intLen - offset - c.toString(2).length;
 
-    return (input & (comp << offset)) >> offset;
+    return (input & (c << offset)) >> offset;
 };
 
 var indexOf = function (array, find) {
