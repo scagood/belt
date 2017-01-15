@@ -33,6 +33,25 @@ var randomInt = function (max, min) {
 };
 
 /**
+ * Generates a random string of length 'length' using 'letters'
+ * @param {Number} min  The minimum number
+ * @param {Number} max  The maximum number
+ * @return {Number}     The random integer
+* */
+var randomString = function (length, letters) {
+    var a;
+    var text = '';
+    length = length || 8;
+    letters = letters || 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+    for (a = 0; a < length; a++) {
+        text += letters[Math.floor(Math.random() * letters.length)];
+    }
+
+    return text;
+};
+
+/**
  * Generates a random array[size][depth] in dimentions
  * @param {Number} size   The size of the array
  * @param {Number} depth  The depth of the array
@@ -60,7 +79,9 @@ module.exports = {
     rand: random,
     randArray: randomArray,
     randInt: randomInt,
+    randString: randomString,
     random: random,
     randomArray: randomArray,
-    randomInt: randomInt
+    randomInt: randomInt,
+    randomString: randomString
 };

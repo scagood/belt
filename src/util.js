@@ -70,7 +70,7 @@ var count = function (array, objects, type) {
     var c = 0;
     type = comp.isDef(type) ? type : '#';
 
-    forAll(array, e => {
+    forAll(array, function (e) {
         if (type === '#' || comp.sameType(type, e)) {
             c++;
         }

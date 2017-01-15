@@ -80,7 +80,7 @@ var minLength = function (array, depth, objects, first) {
 var mnmNumber = function (array, objects) {
     var mx = util.first(array, objects);
     var mn = mx;
-    util.forAll(array, e => {
+    util.forAll(array, function (e) {
         if (comp.isNumber(mx) && mx < e) {
             mx = e;
         }
@@ -102,7 +102,7 @@ var mnmNumber = function (array, objects) {
 * */
 var maxNumber = function (array, objects) {
     var a = util.first(array, objects);
-    util.forAll(array, e => {
+    util.forAll(array, function (e) {
         if (comp.isNumber(e) && a < e) {
             a = e;
         }
@@ -118,7 +118,7 @@ var maxNumber = function (array, objects) {
 * */
 var minNumber = function (array, objects) {
     var a = util.first(array, objects);
-    util.forAll(array, e => {
+    util.forAll(array, function (e) {
         if (comp.isNumber(e) && a > e) {
             a = e;
         }
@@ -156,7 +156,7 @@ var midRange = function (array, objects) {
  */
 var sum = function (array, objects) {
     var t = 0;
-    util.forAll(array, e => {
+    util.forAll(array, function (e) {
         if (comp.isNumber(e)) {
             t += e;
         }
@@ -173,7 +173,7 @@ var sum = function (array, objects) {
 var histogram = function (array, objects) {
     var a;
     var h = {};
-    util.forAll(array, e => {
+    util.forAll(array, function (e) {
         if (comp.isNumber(e)) {
             if (!comp.isDef(h[e])) {
                 h[e] = 0;
@@ -200,7 +200,7 @@ var histogram = function (array, objects) {
 var mean = function (array, objects) {
     var t = 0;
     var c = 0;
-    util.forAll(array, e => {
+    util.forAll(array, function (e) {
         if (comp.isNumber(e)) {
             t += e;
             c++;
@@ -219,7 +219,7 @@ var mean = function (array, objects) {
 var median = function (array, objects) {
     var f = [];
 
-    f.add = e => {
+    f.add = function (e) {
         f[f.length] = e;
     };
 
@@ -242,7 +242,7 @@ var mode = function (array, objects) {
         values: []
     };
 
-    util.forAll(h, (e, l) => {
+    util.forAll(h, function (e, l) {
         if (e === o.count) {
             o.values[o.values.length] = l[0];
         }
@@ -261,7 +261,7 @@ var sumOfSquaredDeviation = function (array, objects) {
     var m = mean(array, objects);
     var o = 0;
 
-    util.forAll(array, e => {
+    util.forAll(array, function (e) {
         if (comp.isNum(e)) {
             o += (e - m) * (e - m);
         }
@@ -277,7 +277,7 @@ var sumOfSquaredDeviation = function (array, objects) {
  */
 var sumOfSquares = function (array, objects) {
     var o = 0;
-    util.forAll(array, e => {
+    util.forAll(array, function (e) {
         if (comp.isNum(e)) {
             o += (e) * (e);
         }
@@ -295,7 +295,7 @@ var meanDeviation = function (array, objects) {
     var o = 0;
     var n = 0;
 
-    util.forAll(array, e => {
+    util.forAll(array, function (e) {
         if (comp.isNum(e)) {
             o += (e - m) * (e - m);
             n++;
